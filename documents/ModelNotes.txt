@@ -1,0 +1,20 @@
+1) If "model repair service" (https://netfabb.azurewebsites.net/) keeps filling in a hole in the model
+    The outer shell needs to be erased by creating the two planes (say 2mm above each other)
+    Intersect face with center nut on both - fill in edges
+    erase the outer edge from underneath
+    
+2)
+
+
+
+
+------------------------------------------------------------------------------------------------------
+Drawing Gears in Skethup (NONE OF THESE TRICKS WORK!!)
+------------------------------------------------------------------------------------------------------
+1) Gears to be 3mm x 3mm
+2) Each Gear requires 8-points ( 3mm / 4 = 0.75mm per side )
+3) So if you want 8mm Circle (IE. with 4mm stems x 4mm base)
+4) Find Circumference = 50.27mm
+5) Divide by Side-Size ( 50.27mm / 0.75mm = 68 sides )
+
+I want 68 sides @ 0.75mm per side = 51mm Circumference = 8.1136mm radius

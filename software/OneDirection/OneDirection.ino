@@ -56,7 +56,9 @@ void loop() {
 }
 
 void stepper(int xw){
-  for (int x=0;x<xw;x++){
+  for (int x=0;x<xw;x=x+1){
+  //for (int x=0;x<xw;x++){
+    //delay(1);
     switch(Steps){
      case 0:
        digitalWrite(IN1, LOW); 
