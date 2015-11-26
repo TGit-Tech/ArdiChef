@@ -15,7 +15,7 @@ Dispenser Labelling
         28BYJ = Uses the 28BYJ Stepper Motor
     MODEL
         FBD = Full Bottom Drop
-        TDP = Top Down Scrape
+        TDS = Top Down Scrape
 
 
 ===================================================================
