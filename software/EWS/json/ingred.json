@@ -1,0 +1,33 @@
+{ "arduino": [
+  {
+    "i2c": 0,
+    "port": [
+      {
+        "pins": "3-6",
+        "ingredient": "Flour",
+        "driver": "ULN2003",
+        "canister": 26,
+        "product": 18,
+        "pulse":3
+      },
+      {
+        "pins": "7-10",
+        "ingredient": "Sugar",
+        "driver": "AD4988",
+        "canister": 48,
+        "product": 20,
+        "pulse": 3
+      }
+    ]
+  },
+  
+  {
+    "i2c": 4,
+    "port": [
+      {
+        "Pins": "7-10"
+      }
+      ]
+  }
+]
+}
