@@ -1,131 +1,43 @@
 { "recipes": [
-  {
-    "name": "Pancakes",
+  { "name": "Pancakes",
     "attribute": "Regular",
     "ingredients": [
-      {
-        "name": "flour",
-        "amount": 2,
-        "unit": "cup"
-      },
-      {
-        "name": "milk",
-        "amount": 2,
-        "unit": "cup"
-      },
-      {
-        "name": "baking soda",
-        "amount": 1,
-        "unit": "teaspoon"
-      },
-      {
-        "name": "strir",
-        "driver": "NEMA17",
-        "RPMspeed": 3
-      },
-      {
-        "name": "cook",
-        "temp": 315,
-        "time": 10
-      }
-      ]
+      {"name": "flour", "amount": 2, "unit": "cup"   },
+      {"name": "milk", "amount": 2, "unit": "cup"   },
+      {"name": "baking soda", "amount": 1, "unit": "teaspoon"},
+      {"name": "strir", "driver": "NEMA17", "RPMspeed": 3},
+      {"name": "cook", "temp": 315, "time": 10}
+    ]
   },
-  {
-    "name": "Pancakes",
+  { "name": "Pancakes",
     "attribute": "Bold",
     "ingredients": [
-      {
-        "name": "flour",
-        "amount": 2,
-        "unit": "cup"
-      },
-      {
-        "name": "milk",
-        "amount": 2,
-        "unit": "cup"
-      },
-      {
-        "name": "baking soda",
-        "amount": 1,
-        "unit": "teaspoon"
-      },
-      {
-        "name": "strir",
-        "driver": "NEMA17",
-        "RPMspeed": 3
-      },
-      {
-        "name": "cook",
-        "temp": 315,
-        "time": 10
-      }
-      ]
+      {"name": "flour", "amount": 2, "unit": "cup"},
+      {"name": "milk",  "amount": 2, "unit": "cup"},
+      {"name": "baking soda", "amount": 1, "unit": "teaspoon"},
+      {"name": "strir", "driver": "NEMA17", "RPMspeed": 3},
+      {"name": "cook", "temp": 315, "time": 10}
+    ]
   },
-  {
-    "name": "Pancakes",
-    "attribute": "Happy",
+  { "name": "Pancakes",
+    "attribute": "Billy",
     "ingredients": [
-      {
-        "name": "flour",
-        "amount": 2,
-        "unit": "cup"
-      },
-      {
-        "name": "milk",
-        "amount": 2,
-        "unit": "cup"
-      },
-      {
-        "name": "baking soda",
-        "amount": 1,
-        "unit": "teaspoon"
-      },
-      {
-        "name": "strir",
-        "driver": "NEMA17",
-        "RPMspeed": 3
-      },
-      {
-        "name": "cook",
-        "temp": 315,
-        "time": 10
-      }
-      ]
+      {"name": "flour", "amount": 2, "unit": "cup"},
+      {"name": "milk",  "amount": 2, "unit": "cup"},
+      {"name": "baking soda", "amount": 1, "unit": "teaspoon"},
+      {"name": "strir", "driver": "NEMA17", "RPMspeed": 3},
+      {"name": "cook", "temp": 315, "time": 10}
+    ]
   }, 
-  {
-    "name": "Pancakes",
-    "attribute": "Sad",
+  { "name": "Pancakes",
+    "attribute": "Bob",
     "ingredients": [
-      {
-        "name": "flour",
-        "amount": 2,
-        "unit": "cup"
-      },
-      {
-        "name": "milk",
-        "amount": 2,
-        "unit": "cup"
-      },
-      {
-        "name": "baking soda",
-        "amount": 1,
-        "unit": "teaspoon"
-      },
-      {
-        "name": "strir",
-        "driver": "NEMA17",
-        "RPMspeed": 3
-      },
-      {
-        "name": "cook",
-        "temp": 315,
-        "time": 10
-      }
-      ]
-  }  
-  
-  
-  
-  
-  ]
+      {"name": "flour", "amount": 2, "unit": "cup"},
+      {"name": "milk",  "amount": 2, "unit": "cup"},
+      {"name": "baking soda", "amount": 1, "unit": "teaspoon"},
+      {"name": "strir", "driver": "NEMA17", "RPMspeed": 3},
+      {"name": "cook", "temp": 315, "time": 10}
+    ]
+  }
+ ]
 }

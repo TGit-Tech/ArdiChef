@@ -3,17 +3,18 @@
     "i2c": 0,
     "port": [
       {
-        "pins": "3-6",
-        "ingredient": "Flour",
+        "motorpins": [2,3,4,5],
         "driver": "ULN2003",
+        "ingredient": "Flour",
         "canister": 26,
         "product": 18,
         "pulse":3
       },
       {
-        "pins": "7-10",
+        "steppin": 7,
+        "dirpin": 6,
         "ingredient": "Sugar",
-        "driver": "AD4988",
+        "driver": "A4988",
         "canister": 48,
         "product": 20,
         "pulse": 3

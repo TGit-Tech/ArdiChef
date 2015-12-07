@@ -1,6 +1,9 @@
-/******************************************************************************
- * Port.h - ArdiChef Port Class
- * 
+/**************************************************************************//** 
+ *  @brief  'Port' manager for mapping & handling drivers and pin-groups.
+ *  @author tgit23
+ *  @code
+ *    exmaple code
+ *  @endcode
  ******************************************************************************/
 #include "PortsCollection.h"
 

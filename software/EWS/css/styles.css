@@ -1,0 +1,70 @@
+.btn {
+  background: #e0e9ff;
+  background-image: -webkit-linear-gradient(top, #e0e9ff, #131ef2);
+  background-image: -moz-linear-gradient(top, #e0e9ff, #131ef2);
+  background-image: -ms-linear-gradient(top, #e0e9ff, #131ef2);
+  background-image: -o-linear-gradient(top, #e0e9ff, #131ef2);
+  background-image: linear-gradient(to bottom, #e0e9ff, #131ef2);
+  -webkit-border-radius: 10;
+  -moz-border-radius: 10;
+  border-radius: 10px;
+  text-shadow: 2px 2px 0px #080108;
+  font-family: Arial;
+  color: #ffffff;
+  font-size: 20px;
+  padding: 8px 20px 8px 20px;
+  border: solid #575557 4px;
+  text-decoration: none;
+}
+
+.btn:hover {
+  background: #00ad4e;
+  text-decoration: none;
+}
+
+   table#content { width:1000px;
+                    border:0px solid black;
+                    padding: 15px;
+                    border-spacing: 20px;
+                  }
+                  
+    th#content {    color:blue;
+                    font-family:verdana;
+                    font-size:300%;
+                    padding: 15px; }
+                    
+    td#content {    border:0px solid black;
+                    padding: 15px; }
+                    
+    button#arecipe {   text-shadow: 0px 0px 0px #080108;
+                    -webkit-box-shadow: 6px 6px 6px #bdaebd;
+                    -moz-box-shadow: 6px 6px 6px #bdaebd;
+                    box-shadow: 6px 6px 6px #bdaebd;
+                    font-family: Georgia;
+                    color: #000000;
+                    font-size: 18px;
+                    background: #e6f2fa;
+                    padding: 8px 20px 8px 20px;
+                    border: solid #05cdff 2px;
+                    text-decoration: none;
+                    cursor:pointer;
+                }
+
+    button#arecipe:hover {
+                    background: #97fcc5;
+                    text-decoration: none;
+                }
+                
+    div#recipe  {   font-size: 5px;
+    }  
+    
+    .recipedetails {
+        background:#FFFFFF;
+        border:5px solid grey;
+        position: absolute;
+        z-index:5;
+        padding:10px;
+        margin:0;
+    }
+        /*table#content { width:100%;border:1px solid black;padding: 15px; }*/
+    td#content { border:0px solid black;padding: 15px; }

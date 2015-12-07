@@ -1,6 +1,7 @@
-/******************************************************************************
- * Port.h - ArdiChef Port Class
- * 
+/**************************************************************************//**
+ * @file   PortsCollection.h
+ * @brief  'Port' manager for mapping & handling drivers and pin-groups. 
+ * @author tgit23
  ******************************************************************************/
 #ifndef PORTSCOLLECTION_H
   #define PORTSCOLLECTION_H
@@ -30,14 +31,17 @@
     #define DBG(x)
   #endif
 
-  /*****************************************************************************
-   * PortsCollection Class
-   ****************************************************************************/
+/**************************************************************************//**
+ * @class  PortsCollection
+ * @brief  'Port' manager for mapping & handling drivers and pin-groups. 
+ * @author tgit23
+ ******************************************************************************/
   class PortsCollection {
     public:
       PortsCollection();
       void SetupWithSDFile(char* SDjsonFile);
       void Setup(char* json);
+      /// Send text commands to port drivers; format is driver specific.
       void Command(const char* DriverCommand);
       void doloop();
     private:

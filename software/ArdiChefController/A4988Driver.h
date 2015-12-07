@@ -1,6 +1,6 @@
-/******************************************************************************
- * A4988 ArdiChef Driver
- * 
+/**************************************************************************//**
+ *  @file   A4988.h
+ *  @brief  Port Driver for the Allegro A4988 Stepper Motor Driver.
  ******************************************************************************/
 #ifndef A4988DRIVER_H
 #define A4988DRIVER_H
@@ -16,11 +16,33 @@
   #define DBG(x)
 #endif
 
+/**********************************************************************************************//**
+ *  @class  A4988Driver
+ *  @brief  ArdiChef Port Driver for Allegro A4988 Stepper Motor Driver.
+ *************************************************************************************************/
 class A4988Driver : public DriverBase {
   public:
+  
+    /** @brief A4988Driver Constructor
+     *  @param[in] stepPin Arduino OUTPUT pin# connected to the A4988 'STEP' Pin
+     *  @param[in] dirPin Arduino OUTPUT pin# connected to the A4988 'DIR' Pin
+     *  @param[in] PulseWidth sets the motor speed; 'STEP' time length in uSec; smaller = faster
+     *  
+     *  <B>Example:</B> @code{.cpp}
+     *  A4988Driver *driver;
+     *  driver = new A4988Driver(6,7,1000); @endcode*/
     A4988Driver(int stepPin, int dirPin, unsigned long PulseWidth = 400);
+
+    /** @brief Process a driver command
+     *  @param[in] Command in form '\c <Port#> \c <#-of-Steps>'
+     *  
+     *  <B>Example:</B> @code{.cpp}
+     *    if (true) Command("0 2300"); @endcode*/
     void Command(const char* Command);
+
+    /// @brief Repetative call function to keep the output active
     void doloop();
+    
   private:
     unsigned long msteps = 0;
     int mdir = 0;
