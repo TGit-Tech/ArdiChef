@@ -8,7 +8,7 @@
         "ingredient": "Flour",
         "canister": 26,
         "product": 18,
-        "pulse":3
+        "teaspoon":1000
       },
       {
         "steppin": 7,
@@ -17,7 +17,15 @@
         "driver": "A4988",
         "canister": 48,
         "product": 20,
-        "pulse": 3
+        "teaspoon": 1000
+      },
+      {
+        "motorpins": [10,11,12,13],
+        "driver": "ULN2003",
+        "ingredient": "Milk",
+        "canister": 26,
+        "product": 18,
+        "teaspoon":1000
       }
     ]
   },

@@ -31,17 +31,6 @@ window.onload = function () {
             }
         }
     }
-    
-    // Get Ingredients JSON
-    if (oJSONI == null ) {
-        xhttp.open("GET", "json/ingred.json", true);      // Load Ingredient JSON file
-        xhttp.send();
-        xhttp.onreadystatechange = function () {
-            if(xhttp.readyState == 4 && xhttp.status == 200) { 
-                oJSONI=JSON.parse(xhttp.responseText);
-            }
-        }
-    }
 }
 
 function LoadIngredContent() {
@@ -51,7 +40,7 @@ function LoadIngredContent() {
         out = out + "<th id=\"content\">" + oJSONR.arduino[0].port[i].ingredient + "</th>";
         col.push(
             "driver: " + oJSONR.arduino[0].port[i].driver + "<br />" +
-            "pulse: " + oJSONR.arduino[0].port[i].pulse + "<br />" +
+            "teaspoon: " + oJSONR.arduino[0].port[i].teaspoon + "<br />" +
             "<a href=\"#\">Manual On</a>"
         );
     }
@@ -130,18 +119,24 @@ function RecipeClick(i) {
     }
     
     // Build the ArdiChef Controller I2C Commands
-    // Need to add unit conversion via //oJSONR.recipes[i].ingredients[j].unit + " " +
     for ( j in oJSONR.recipes[i].ingredients ) {        // Iterate recipe ingredients
         for ( k in oJSONI.arduino[0].port ) {           // Iterate available ingredients
             if ( oJSONI.arduino[0].port[k].ingredient.toLowerCase() == oJSONR.recipes[i].ingredients[j].name.toLowerCase() ) {
                 url = url + k;      // Record the Port# for the Ingredient
-                url = url + "," + oJSONR.recipes[i].ingredients[j].amount + ";"; //Record amount
+                val = MeasureConvert(
+                        oJSONR.recipes[i].ingredients[j].amount,
+                        oJSONR.recipes[i].ingredients[j].unit, 
+                        "teaspoon") * oJSONI.arduino[0].port[k].teaspoon;
+                url = url + "," + val;
             }
         }
+        if (val > 0) url = url + ";";
+        var val = 0;
     }
   
     // Send the Commands via POST
     xhttp.open("POST", url, true);
+    document.getElementById("debug").innerHTML = url;
     
     // Send the proper header information along with the page request
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
@@ -149,4 +144,37 @@ function RecipeClick(i) {
     xhttp.setRequestHeader("Connection", "close");
     
     xhttp.send(params);
+}
+
+/*
+3 tsp = tablespoon
+6 tsp = fl oz
+48 tsp = cup
+96 tsp = pint
+192 tsp = quart
+768 tsp = gallon
+*/
+function MeasureConvert(Value, BaseUnit, TargetUnit) {
+    // Convert Base to teaspoons
+    switch(BaseUnit.toLowerCase()) {
+        case "teaspoon": Value = Value; break;
+        case "tablespoon": Value = Value * 3; break;
+        case "fluid oz": Value = Value * 6; break;
+        case "cup": Value = Value * 48; break;
+        case "pint": Value = Value * 96; break;
+        case "quart": Value = Value * 192; break;
+        case "gallon": Value = Value * 768; break;
+        default: Value = 0;
+    }
+    // Convert teaspoons to TargetUnit
+    switch(TargetUnit.toLowerCase()) {
+        case "teaspoon": return Value;
+        case "tablespoon": return Value/3;
+        case "fluid oz": return Value/6;
+        case "cup": return Value/48;
+        case "pint": return Value/96;
+        case "quart": return Value/192;
+        case "gallon": return Value/768;
+        default: Value = 0;
+    }
 }

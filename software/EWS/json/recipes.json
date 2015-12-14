@@ -12,7 +12,7 @@
   { "name": "Pancakes",
     "attribute": "Bold",
     "ingredients": [
-      {"name": "flour", "amount": 2, "unit": "cup"},
+      {"name": "flour", "amount": 4, "unit": "cup"},
       {"name": "milk",  "amount": 2, "unit": "cup"},
       {"name": "baking soda", "amount": 1, "unit": "teaspoon"},
       {"name": "strir", "driver": "NEMA17", "RPMspeed": 3},
@@ -22,7 +22,7 @@
   { "name": "Pancakes",
     "attribute": "Billy",
     "ingredients": [
-      {"name": "flour", "amount": 2, "unit": "cup"},
+      {"name": "flour", "amount": 6, "unit": "cup"},
       {"name": "milk",  "amount": 2, "unit": "cup"},
       {"name": "baking soda", "amount": 1, "unit": "teaspoon"},
       {"name": "strir", "driver": "NEMA17", "RPMspeed": 3},
@@ -32,7 +32,7 @@
   { "name": "Pancakes",
     "attribute": "Bob",
     "ingredients": [
-      {"name": "flour", "amount": 2, "unit": "cup"},
+      {"name": "flour", "amount": 8, "unit": "cup"},
       {"name": "milk",  "amount": 2, "unit": "cup"},
       {"name": "baking soda", "amount": 1, "unit": "teaspoon"},
       {"name": "strir", "driver": "NEMA17", "RPMspeed": 3},
