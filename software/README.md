@@ -1,6 +1,6 @@
 # Software
 #####For the ArdiChef Project
-<img src="./images/EWS-UI-Recipes.JPG" width="646" height="200"></img>
+<img src="./images/EWS-UI-Recipes.jpg" width="646" height="200"></img>
 
 -------------------------------------------------------------------------------------
 ##Choosing a Hardware Configuration
