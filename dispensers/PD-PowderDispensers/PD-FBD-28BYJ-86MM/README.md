@@ -1,5 +1,6 @@
 # Assembly Instructions
-### For Part: PD-FBD-28BYJ-85MM
+### For Part: PD-FBD-28BYJ-86MM
+<img src="./images/SAM_2414.JPG" height="300" width="400"></img>
 
 -----------------------------------------------------------------------------------
 ## Bill Of Materials
@@ -21,28 +22,46 @@
     
     <img src="./images/3DCanisterBase.jpg" width="534" height="300">
     
-2. Other Parts
+2. Hardware
     - (3) #4 x 3/4" Machine Screws
     - (3) #4 Nuts
     - (3) #4 Flat Washers
     - (2) #6 or #8 x 3/4" Machine Screws
     - (2) #6 or #8 Nuts
     
-    <img src="../../images/MachineScrews.jpg" width="330" height="150">
+    <img src="../../_images/MachineScrews.jpg" width="330" height="150">
     - 28BYJ-48 Step Motor
     - ULN2003 Step Motor Driver Board
     
-    <img src="../../images/28BYJ_ULN2003.gif">
+    <img src="../../_images/28BYJ_ULN2003.gif">
         
 -----------------------------------------------------------------------------------
 ## Assembly
 -----------------------------------------------------------------------------------
-1. Place Canister Cover on Work bench
-2. Place Center Ring on Canister Cover
-3. Place Dispense Gear inside Center Ring
-4. Place Stepper Motor inside Canister Base
-5. Attach Motor Gear to Stepper Motors Shaft
-6. Place Canister Base on top of Center Ring
-<img src="./images/SAM_2360.JPG">
-7. Use #6 or #8 Screws for Mounting the Motor
-8. Use #4 Machine Screws for Side Fasteners
+1. Place the "Canister Cover" on Work bench (smooth side up)
+    - Insert a #4 x 1/2" Bolt upwards through the center
+    - Place a #4 flat washer on the bolt
+    - Place the "Center Ring" on top of the "Canister Cover"
+    
+    <img src="./images/SAM_2408.JPG" height="300" width="400"></img>
+    
+3. Place the "Dispense Gear" inside the "Center Ring"
+    - Place 2 - #4 Flat Washers on top
+    
+    <img src="./images/SAM_2409.JPG" height="300" width="400"></img>
+    
+4. Place Stepper Motor under the Canister Base (Motor meshes with the coarse side - Smooth surface up)
+    - Attach the "Motor Gear" to the motor shaft (Smooth surface up)
+    
+    <img src="./images/SAM_2410.JPG" height="300" width="400"></img>
+    
+5. Flip the "Canister Base" with Motor and place on top of the "Center Ring"
+    - Attach a #4 Flat Washer on top
+    
+    <img src="./images/SAM_2412.JPG" height="300" width="400"></img>
+    
+6. Fasten the motor to the despenser
+    - Use #6 x 3/4" Machine Screws
+    
+    <img src="./images/SAM_2414.JPG" height="300" width="400"></img>
+    
