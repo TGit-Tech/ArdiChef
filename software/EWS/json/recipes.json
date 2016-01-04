@@ -1,5 +1,4 @@
-{ "recipes": [
-  { "name": "Pancakes",
+{ "recipes": [{ "name": "Pancakes",
     "attribute": "Regular",
     "ingredients": [
       {"name": "flour", "amount": 2, "unit": "cup"   },

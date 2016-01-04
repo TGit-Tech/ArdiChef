@@ -2,24 +2,26 @@
 <html>
 <head>
 <script language="javascript" type="text/javascript" src="js/loadjson.js"></script>
-<link rel="stylesheet" type="text/css" href="css/styles.css">
-<meta charset="UTF-8">
+<link rel="stylesheet" type="text/css" href="css/styles.css"></link>
+<meta charset="UTF-8"></meta>
 <title>ArdiChef Panel</title>
 </head>
 
 <body>
     <!--  Top -->
-    <table style="width:100%"><td>
+    <table style="width:100%"><tr>
     <td><img src="images/ardichef.png" alt="ArdiChef" style="width:165px;height:50px;border:0;"></img></td>
     <td><a href="index.htm" class="btn">Home Page</a></td>
     <td><a href="recipes.htm" class="btn">Recipes</a></td>
     <td><a href="ingred.htm" class="btn">Ingredients</a></td></tr></table>
     <div style="background-color:black; color:white; padding:5px;"></div>
 
-    <!-----------------------  Content -------------------------->
+    <!--  Content -->
+    <button id="save" style="background-color: #66FF33; color:black; padding:5px;" onClick="SaveChanges()">Save Changes</button>
     <div id="content" style="background-color:#DDFFDD; color:black; padding:5px;"></div>
     
     <div id="debug"></div>
+    <div id="debug2"></div>
 
 </body>
 

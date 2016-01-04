@@ -22,15 +22,21 @@
   text-decoration: none;
 }
 
-   table#content { width:1000px;
+body{
+    width: 640px;
+    margin: 0 auto;
+}
+
+   table#content { width:100%;
                     border:0px solid black;
                     padding: 15px;
                     border-spacing: 20px;
                   }
                   
     th#content {    color:blue;
+                    border:1px solid black;
                     font-family:verdana;
-                    font-size:300%;
+                    font-size:100%;
                     padding: 15px; }
                     
     td#content {    border:0px solid black;
@@ -67,4 +73,4 @@
         margin:0;
     }
         /*table#content { width:100%;border:1px solid black;padding: 15px; }*/
-    td#content { border:0px solid black;padding: 15px; }
+    td#content { border:1px solid black;padding: 15px; }

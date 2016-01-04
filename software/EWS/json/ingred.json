@@ -3,7 +3,7 @@
     "i2c": 0,
     "port": [
       {
-        "motorpins": [2,3,4,5],
+        "motorpins": [22,23,24,25],
         "driver": "ULN2003",
         "ingredient": "Flour",
         "canister": 26,
@@ -11,21 +11,29 @@
         "teaspoon":1000
       },
       {
-        "steppin": 7,
-        "dirpin": 6,
+        "motorpins": [26,27,28,29],
+        "driver": "ULN2003",
         "ingredient": "Sugar",
+        "canister": 26,
+        "product": 18,
+        "teaspoon":1000
+      },
+      {
+        "motorpins": [30,31,32,33],
+        "driver": "ULN2003",
+        "ingredient": "Baking Soda",
+        "canister": 26,
+        "product": 18,
+        "teaspoon":1000
+      },
+      {
+        "steppin": 34,
+        "dirpin": 35,
+        "ingredient": "Milk",
         "driver": "A4988",
         "canister": 48,
         "product": 20,
         "teaspoon": 1000
-      },
-      {
-        "motorpins": [10,11,12,13],
-        "driver": "ULN2003",
-        "ingredient": "Milk",
-        "canister": 26,
-        "product": 18,
-        "teaspoon":1000
       }
     ]
   },
@@ -34,7 +42,7 @@
     "i2c": 4,
     "port": [
       {
-        "Pins": "7-10"
+        "motorpins": [34,36,38,40]
       }
       ]
   }
