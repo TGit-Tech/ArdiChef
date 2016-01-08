@@ -23,7 +23,7 @@
 }
 
 body{
-    width: 640px;
+    width: 840px;
     margin: 0 auto;
 }
 
@@ -72,5 +72,30 @@ body{
         padding:10px;
         margin:0;
     }
+    
+    .recipe {
+        text-shadow: 0px 0px 0px #080108;
+        -webkit-box-shadow: 6px 6px 6px #bdaebd;
+        -moz-box-shadow: 6px 6px 6px #bdaebd;
+        box-shadow: 6px 6px 6px #bdaebd;
+        font-family: Georgia;
+        color: #000000;
+        font-size: 18px;
+        background: #e6f2fa;
+        padding: 8px 20px 8px 20px;
+        border: solid #05cdff 2px;
+        text-decoration: none;
+        cursor:pointer;
+    }
         /*table#content { width:100%;border:1px solid black;padding: 15px; }*/
     td#content { border:1px solid black;padding: 15px; }
+    
+    hr {
+        display: block;
+        margin-top: 0.5em;
+        margin-bottom: 0.5em;
+        margin-left: auto;
+        margin-right: auto;
+        border-style: inset;
+        border-width: 1px;
+    }

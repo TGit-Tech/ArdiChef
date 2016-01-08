@@ -4,11 +4,20 @@ The MIT License (MIT)
 
 Copyright (c) 2014 Thomas Gittins
 
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software 
+and associated documentation files (the "Software"), to deal in the Software without restriction, 
+including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, 
+and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, 
+subject to the following conditions:
 
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+The above copyright notice and this permission notice shall be included in all copies or substantial 
+portions of the Software.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING 
+BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND 
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, 
+DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, 
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 */
 /**********************************************************************************************//**
 * @file loadjson.js
@@ -19,22 +28,22 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 *       ARDUINO_IP  Redirects AJAX requests to an outside IP; This can be used to run and edit the
 *                   EWS code on a local PC while sending requests to the Arduino.
 *                       local computer and make edits while transfering requests to the Arduino.
+*   Initial Calibrations:
+*       75000 = 1/3 Cup Flour = 16 teaspoons so 1 teaspoon = 4687
 * @authors
 *       tgit23          1/2016      Original
 * @todo
 *       Consider using G-Code standard
 **************************************************************************************************/
 // SETUP VARIABLES
-var ARDUINO_IP = "";  // Redirect AJAX to IP: example http://192.168.0.25
+var ARDUINO_IP = "http://192.168.0.25";  // Redirect AJAX to IP: example http://192.168.0.25
 var DBG = 0;                             // Activate Debug Messages on the EWS page
 
 // CODE VARIABLES
 var recipesJSON = null; // JSON object for Recipes
 var ingredJSON = null; // JSON object for Ingredients
+var thispage = "";
 var Stick = 0;
-var changed = 0;
-var gparams;
-var gurl;
 
 /**********************************************************************************************//**
 * @brief ajaxRequest()
@@ -58,18 +67,18 @@ window.onload = function () {
 
     // Load the <html>.JSON file
     var url = window.location.pathname;                         // Get URL
-    var filename = url.substring(url.lastIndexOf('/')+1);       // Get HTML page filename
-    filename = filename.slice(0,filename.lastIndexOf('.'));     // Remove Extension
+    thispage = url.substring(url.lastIndexOf('/')+1);           // Get HTML page filename
+    thispage = thispage.slice(0,thispage.lastIndexOf('.'));     // Remove Extension
     
-    if( (filename=="ingred" && ingredJSON == null) || (filename=="recipes" && recipesJSON == null) ) {
+    if( (thispage=="ingred" && ingredJSON == null) || (thispage=="recipes" && recipesJSON == null) ) {
         var xhttp = ajaxRequest();
-        xhttp.open("GET", "json/" + filename + ".json", true);      // Load equivalent JSON file
+        xhttp.open("GET", "json/" + thispage + ".json", true);      // Load equivalent JSON file
         xhttp.setRequestHeader("Content-type", "application/json");
         xhttp.setRequestHeader("Connection", "close");
         xhttp.send();
         xhttp.onreadystatechange = function () {
             if(xhttp.readyState == 4 && xhttp.status == 200) {
-                if(filename=="ingred") {
+                if(thispage=="ingred") {
                     ingredJSON=JSON.parse(xhttp.responseText);
                     LoadIngredContent();
                 } else {
@@ -93,15 +102,29 @@ function LoadIngredContent() {
     var col = [];
     for( i in ingredJSON.arduino[0].port ) {
         if(i%3==0) { out = out + "</tr><tr>"; }
-        out = out + "<td id=\"content\"><b><u>" + ingredJSON.arduino[0].port[i].ingredient + "</u></b><br />" +
+        out = out + "<td id=\"content\"><u><b>Port #"+i+"</u></b><br />" +
+                "<input size=\"10\" " + 
+                    "value=\"" + ingredJSON.arduino[0].port[i].ingredient + "\" " +
+                    "onChange=\"ingredJSON.arduino[0].port["+i+"].ingredient = value;" +
+                    "document.getElementById('save').style.backgroundColor='#FF5050';\"></input> :Ingredient<br />" +
             "driver: " + ingredJSON.arduino[0].port[i].driver + "<br />" +
-            "teaspoon: " + ingredJSON.arduino[0].port[i].teaspoon + "<br />" +
-            "<a href=\"" + url + "?nc=" + i + ",5000;\">Manual On</a></td>";
+            "<input size=\"5\" " +
+                "value=\"" + ingredJSON.arduino[0].port[i].teaspoon + "\" " +
+                "onChange=\"ingredJSON.arduino[0].port["+i+"].teaspoon = value;" +
+                "document.getElementById('save').style.backgroundColor='#FF5050';\"></input> :teaspoon<br />" +
+            "<input id=\"steps"+i+"\" size=\"5\" value=\"5000\"></input>" +
+            "<button onClick=\"manual("+i+",document.getElementById('steps"+i+"').value);\">On</button>" +
+            "<button onClick=\"manual("+i+",5)\">Off</button>Manual</td>";
     }
     out = out + "<td id=\"content\"><button onclick=\"AddIngredient()\">Add Ingredient</button></td></tr></table>";
     document.getElementById("content").innerHTML = out; 
 }
 
+function manual(port,steps) {
+    var nc_codes = [];
+    nc_codes.push("nc="+port+","+steps+";");
+    SendParameters(nc_codes);
+}
 /**********************************************************************************************//**
 * @brief LoadRecipeContent()
 *   Loads 'recipes.json' into the web-page "content" element.
@@ -115,7 +138,9 @@ function LoadRecipeContent() {
     // For Each Recipe
     for( i in recipesJSON.recipes ) {
         if(i%3==0) { out = out + "</tr><tr>"; }         // Three recipes per row
-        out = out + "<td id=\"content\" >";             // Create Master Button for the Recipe
+        
+        // Master Recipe Button
+        out = out + "<td id=\"content\" >";
         out = out + "<button onclick=\"RecipeClick(" + i + ")\" id=\"arecipe\">" + 
                     recipesJSON.recipes[i].attribute + " " + 
                     recipesJSON.recipes[i].name + "</button>";
@@ -128,14 +153,15 @@ function LoadRecipeContent() {
                     "value=\"" + recipesJSON.recipes[i].ingredients[j].amount + "\" " +
                     "onChange=\"recipesJSON.recipes["+i+"].ingredients["+j+"].amount = value;" +
                     "document.getElementById('save').style.backgroundColor='#FF5050';\"></input> - " +
-                "<input size=\"5\" " +
-                    "value=\"" + recipesJSON.recipes[i].ingredients[j].unit + "\" " +
+                "<select " +
                     "onChange=\"recipesJSON.recipes[" + i + "].ingredients[" + j + "].unit = value;" +
-                    "document.getElementById('save').style.backgroundColor='#FF5050';\"></input> " +
+                    "document.getElementById('save').style.backgroundColor='#FF5050';\">" + 
+                    amounts(recipesJSON.recipes[i].ingredients[j].unit) + "</select> " +
                 "<input size=\"10\" " +
-                    "value=\"" + recipesJSON.recipes[i].ingredients[j].unit + "\" " +
-                    "onChange=\"recipesJSON.recipes[" + i + "].ingredients[" + j + "].unit = value;" +
-                    "document.getElementById('save').style.backgroundColor='#FF5050';\"></input><br>";
+                    "value=\"" + recipesJSON.recipes[i].ingredients[j].name + "\" " +
+                    "onChange=\"recipesJSON.recipes[" + i + "].ingredients[" + j + "].name = value;" +
+                    "document.getElementById('save').style.backgroundColor='#FF5050';\"></input>" +
+                "<button>-</button><br />";
         }
         
         // HTML for Recipe Details and 'Recipe' Text pop-out
@@ -143,17 +169,58 @@ function LoadRecipeContent() {
             "onmouseover=\"document.getElementById('recipe" + i + "').style.display = 'inline';\" " +
             "onmouseout=\"if(!Stick) {document.getElementById('recipe" + i + "').style.display = 'none';}\" " +
             "onclick=\"if(Stick){Stick=0;}else{Stick=1;}\"><i>details/click-edit</i></div>" +
-            "<div id=\"recipe" + i + "\" class=\"recipedetails\" style=\"display:none;\">" + ingr + "</div></td>"
+            "<div id=\"recipe" + i + "\" class=\"recipedetails\" style=\"display:none;\">" + ingr + 
+            "<button onclick=\"addrecipeingredient(recipe"+i+","+i+")\">+</button><br />" +
+            "</div></td>";
         
     }
     
     // Append an Add Recipe Button
     out = out + "<td id=\"content\" >";
-    out = out + "<button onclick=\"AddRecipe()\" id=\"arecipe\">Add Recipe</button></td></tr></table>";
+    out = out + "<button onclick=\"AddRecipe()\" id=\"arecipe\">Add Recipe</button>";
+    ingr = "";
+    ingr = ingr +
+        "<input size=\"10\" " + "> :name</input><br />" +
+        "<input size=\"10\" " + "> :attribute</input><br />" +
+        "<button onclick=\"addrecipeingredient('recipeadd')\">+</button><br />";
+    out = out + "<div style=\"width: 100px;cursor:alias;\" " +
+        "onmouseover=\"document.getElementById('recipeadd').style.display = 'inline';\" " +
+        "onmouseout=\"if(!Stick) {document.getElementById('recipeadd').style.display = 'none';}\" " +
+        "onclick=\"if(Stick){Stick=0;}else{Stick=1;}\"><i>details/click-edit</i></div>" +
+        "<div id=\"recipeadd\" class=\"recipedetails\" style=\"display:none;\">" + ingr + "</div></td>";
+    out = out + "</tr></table>";
+    
+    
+    
     document.getElementById("content").innerHTML = out;   
     if(DBG) document.getElementById("debug2").innerHTML = JSON.stringify(recipesJSON); 
 }
 
+function addrecipeingredient(div_id, i) {
+    var el = document.getElementById(elementid);
+    if(typeof(index)=='undefined') { 
+        recipesJSON['recipes'].push({"name":"","attribute":"","ingredients":[]});
+    } else {
+        recipesJSON['recipes'][i]['ingredients'].push({"name":"","amount":0,"unit":""});
+    }
+    recipesJSON['recipes'].push({  "name": "",
+                                "attribute": "",
+                                "ingredients": [
+                                {"name": "flour", "amount": 4, "unit": "cup"},
+                                {"name": "milk",  "amount": 2, "unit": "cup"},
+                                {"name": "baking soda", "amount": 1, "unit": "teaspoon"},
+                                {"name": "strir", "driver": "NEMA17", "RPMspeed": 3},
+                                {"name": "cook", "temp": 315, "time": 10}
+                                ]
+                            });
+  
+    el.innerHTML += "<input size=\"2\" " + 
+                        "onChange=\"recipesJSON.recipes.push[" + i + "].ingredients[" + j + "].name = value;" +
+                    "document.getElementById('save').style.backgroundColor='#FF5050';\"></input> - " +
+        "<select " + ">" + amounts() + "</select> " +
+        "<input size=\"10\" " + "></input>" +
+        "<button>-</button><br />";
+}
 /**********************************************************************************************//**
 * @brief SaveChanges() - Save changes made to recipes using the JSON object
 *       Builds and sends the recipesJSON.stringify() to the Arduino to be saved using (fw)(fa) tags.
@@ -167,13 +234,17 @@ function LoadRecipeContent() {
 **************************************************************************************************/
 function SaveChanges() {
     if(document.getElementById("save").style.backgroundColor=="rgb(102, 255, 51)") { return; }
-    var jsonstring = JSON.stringify(recipesJSON); //.replace(/ /g,"+");
+    if(thispage=="ingred") { 
+        var jsonstring = JSON.stringify(ingredJSON); 
+    } else {
+        var jsonstring = JSON.stringify(recipesJSON);
+    }
     var params = jsonstring.match(/[\s\S]{1,79}/g) || [];       // Parse to 84 characters - bigger causes ArdiChef WebServer fragments
     for( i in params ) {
         if(i==0) { params[i] = "fw=" + params[i]; 
         } else { params[i] = "fa=" + params[i]; }
     }
-    SendParameters(params,"/json/recipes.json");
+    SendParameters(params,"/json/"+thispage+".json");
     document.getElementById('save').style.backgroundColor='#66FF33';
 }
 /**********************************************************************************************//**
@@ -278,7 +349,7 @@ function MeasureConvert(Value, BaseUnit, TargetUnit) {
     switch(BaseUnit.toLowerCase()) {
         case "teaspoon": Value = Value; break;
         case "tablespoon": Value = Value * 3; break;
-        case "fluid oz": Value = Value * 6; break;
+        case "fluidoz": Value = Value * 6; break;
         case "cup": Value = Value * 48; break;
         case "pint": Value = Value * 96; break;
         case "quart": Value = Value * 192; break;
@@ -289,11 +360,21 @@ function MeasureConvert(Value, BaseUnit, TargetUnit) {
     switch(TargetUnit.toLowerCase()) {
         case "teaspoon": return Value;
         case "tablespoon": return Value/3;
-        case "fluid oz": return Value/6;
+        case "fluidoz": return Value/6;
         case "cup": return Value/48;
         case "pint": return Value/96;
         case "quart": return Value/192;
         case "gallon": return Value/768;
         default: Value = 0;
     }
+}
+
+function amounts(selected) {
+    return "<option value=\"teaspoon\" " + ((selected=="teaspoon") ? "selected=\"selected\"" : "") + ">teaspoon</option>" +
+            "<option value=\"tablespoon\" " + ((selected=="tablespoon") ? "selected=\"selected\"" : "") + ">tablespoon</option>" +
+            "<option value=\"fluidoz\" " + ((selected=="fluidoz") ? "selected=\"selected\"" : "") + ">fluidoz</option>" +
+            "<option value=\"cup\" " + ((selected=="cup") ? "selected=\"selected\"" : "") + ">cup</option>" +
+            "<option value=\"pint\" " + ((selected=="pint") ? "selected=\"selected\"" : "") + ">pint</option>" +
+            "<option value=\"quart\" " + ((selected=="quart") ? "selected=\"selected\"" : "") + ">quart</option>" +
+            "<option value=\"gallon\" " + ((selected=="gallon") ? "selected=\"selected\"" : "") + ">gallon</option>"
 }

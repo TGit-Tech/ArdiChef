@@ -322,70 +322,51 @@ void WebServerSTPlus::doloop(char *nc_code) {
   }
 }
 
-void WebServerSTPlus::sendBadRequest(EthernetClient thisClient) {
-  char tBuf[64];
-  strcpy_P(tBuf,PSTR("HTTP/1.0 400 Bad Request\r\n"));
-  thisClient.write(tBuf);
-  strcpy_P(tBuf,PSTR("Content-Type: text/html\r\nConnection: close\r\n\r\n"));
-  thisClient.write(tBuf);
-  strcpy_P(tBuf,PSTR("<html><body><H1>BAD REQUEST</H1></body></html>"));
-  thisClient.write(tBuf);
-  thisClient.stop();  
-
-  DB1L((F("disconnected")));
-
-}
-
+//----------------------- UTILITY ----------------------------------------
+/***********************************************************************************//**
+ * @brief strtoupper(text)
+ *    Change all characters to upper-case
+ **************************************************************************************/
 void  WebServerSTPlus::strtoupper(char* aBuf) {
   for(int x = 0; x<strlen(aBuf);x++) {
     aBuf[x] = toupper(aBuf[x]);
   }
 }
 
+/***********************************************************************************//**
+ * @brief urldecode(return, request-text)
+ *    Decode %xx URL encodes back into their original characters
+ **************************************************************************************/
+void WebServerSTPlus::urldecode(char *dst, const char *src) {
+  char a, b;
+  while (*src) {
+    // If %dd found
+    if ((*src == '%') && ((a = src[1]) && (b = src[2])) && (isxdigit(a) && isxdigit(b))) {
+      if (a >= 'a') { a -= 'a'-'A'; }
+      if (a >= 'A') { a -= ('A' - 10);} else { a -= '0';}
+      if (b >= 'a') { b -= 'a'-'A';}
+      if (b >= 'A') { b -= ('A' - 10);} else { b -= '0';}
+      *dst++ = 16*a+b;
+      src+=3;
+    } else { *dst++ = *src++; }
+  }
+  *dst++ = '\0';
+}
+
+/***********************************************************************************//**
+ * @brief freeRam()
+ * @return Returns the amount of free RAM memory on the Arduino
+ **************************************************************************************/
 int WebServerSTPlus::freeRam() {
   extern int __heap_start,*__brkval;
   int v;
   return (int)&v - (__brkval == 0 ? (int)&__heap_start : (int) __brkval);  
 }
 
-void WebServerSTPlus::sendFileNotFound(EthernetClient thisClient) {
-  char tBuf[64];
-  strcpy_P(tBuf,PSTR("HTTP/1.0 404 File Not Found\r\n"));
-  thisClient.write(tBuf);
-  strcpy_P(tBuf,PSTR("Content-Type: text/html\r\nConnection: close\r\n\r\n"));
-  thisClient.write(tBuf);
-  strcpy_P(tBuf,PSTR("<html><body><H1>FILE NOT FOUND</H1></body></html>"));
-  thisClient.write(tBuf);
-  thisClient.stop();  
-
-  DB1L((F("disconnected")));
-
-}
-
-void WebServerSTPlus::printDirectory(File dir, int numTabs) {
-  while (true) {
-
-    File entry =  dir.openNextFile();
-    if (! entry) {
-      // no more files
-      break;
-    }
-    for (uint8_t i = 0; i < numTabs; i++) {
-      Serial.print('\t');
-    }
-    Serial.print(entry.name());
-    if (entry.isDirectory()) {
-      Serial.println("/");
-      printDirectory(entry, numTabs + 1);
-    } else {
-      // files have sizes, directories do not
-      Serial.print("\t\t");
-      Serial.println(entry.size(), DEC);
-    }
-    entry.close();
-  }
-}
-
+/***********************************************************************************//**
+ * @brief checkSockStatus()
+ *    
+ **************************************************************************************/
 void WebServerSTPlus::checkSockStatus()
 {
   unsigned long thisTime = millis();
@@ -406,6 +387,10 @@ void WebServerSTPlus::checkSockStatus()
   }
 }
 
+/***********************************************************************************//**
+ * @brief ShowSockStatus()
+ *    
+ **************************************************************************************/
 void WebServerSTPlus::ShowSockStatus()
 {
   for (int i = 0; i < MAX_SOCK_NUM; i++) {
@@ -430,6 +415,81 @@ void WebServerSTPlus::ShowSockStatus()
   }
 }
 
+//----------------------- STATUS MESSAGES --------------------------------
+/***********************************************************************************//**
+ * @brief sendBadRequest(client)
+ *    send a "BAD REQUEST" html page
+ **************************************************************************************/
+void WebServerSTPlus::sendBadRequest(EthernetClient thisClient) {
+  char tBuf[64];
+  strcpy_P(tBuf,PSTR("HTTP/1.0 400 Bad Request\r\n"));
+  thisClient.write(tBuf);
+  strcpy_P(tBuf,PSTR("Content-Type: text/html\r\nConnection: close\r\n\r\n"));
+  thisClient.write(tBuf);
+  strcpy_P(tBuf,PSTR("<html><body><H1>BAD REQUEST</H1></body></html>"));
+  thisClient.write(tBuf);
+  thisClient.stop();  
+
+  DB1L((F("disconnected")));
+
+}
+
+/***********************************************************************************//**
+ * @brief sendBadRequest(client)
+ *    send a "FILE NOT FOUND" html page
+ **************************************************************************************/
+void WebServerSTPlus::sendFileNotFound(EthernetClient thisClient) {
+  char tBuf[64];
+  strcpy_P(tBuf,PSTR("HTTP/1.0 404 File Not Found\r\n"));
+  thisClient.write(tBuf);
+  strcpy_P(tBuf,PSTR("Content-Type: text/html\r\nConnection: close\r\n\r\n"));
+  thisClient.write(tBuf);
+  strcpy_P(tBuf,PSTR("<html><body><H1>FILE NOT FOUND</H1></body></html>"));
+  thisClient.write(tBuf);
+  thisClient.stop();  
+
+  DB1L((F("disconnected")));
+
+}
+
+
+//----------------------------- SD Utility ------------------------------------------------------------
+/***********************************************************************************//**
+ * @brief printDirectory(dir,numTabs)
+ *    List the files in the 'dir' path of the SD-card on the Serial Monitor
+ **************************************************************************************/
+void WebServerSTPlus::printDirectory(File dir, int numTabs) {
+  while (true) {
+
+    File entry =  dir.openNextFile();
+    if (! entry) {
+      // no more files
+      break;
+    }
+    for (uint8_t i = 0; i < numTabs; i++) {
+      Serial.print('\t');
+    }
+    Serial.print(entry.name());
+    if (entry.isDirectory()) {
+      Serial.println("/");
+      printDirectory(entry, numTabs + 1);
+    } else {
+      // files have sizes, directories do not
+      Serial.print("\t\t");
+      Serial.println(entry.size(), DEC);
+    }
+    entry.close();
+  }
+}
+
+/***********************************************************************************//**
+ * @brief sdWrite(fileName,text,type)
+ * @param fileName The full path and fileName to write to on the SD-Card   
+ * @param text The text to be written
+ * @param WriteType 'WRITE' or 'APPEND'
+ * @notes
+ *    'fileName' will be automatically parsed to the 8.3-SFN standard
+ **************************************************************************************/
 void WebServerSTPlus::sdWrite(char* fileName, char* text, sdWriteType WriteType) {
   DB1((F("WebServerSTPlus::sdWrite( '")));DB1((fileName));DB1((F("','")));DB1((text));DB1L((F("')")));
 
@@ -476,31 +536,3 @@ void WebServerSTPlus::sdWrite(char* fileName, char* text, sdWriteType WriteType)
   }
 }
 
-void WebServerSTPlus::urldecode(char *dst, const char *src)
-{
-  char a, b;
-  while (*src) {
-    if ((*src == '%') &&
-      ((a = src[1]) && (b = src[2])) &&
-      (isxdigit(a) && isxdigit(b))) {
-      if (a >= 'a')
-        a -= 'a'-'A';
-      if (a >= 'A')
-        a -= ('A' - 10);
-      else
-        a -= '0';
-      if (b >= 'a')
-        b -= 'a'-'A';
-      if (b >= 'A')
-        b -= ('A' - 10);
-      else
-        b -= '0';
-      *dst++ = 16*a+b;
-      src+=3;
-    } 
-    else {
-      *dst++ = *src++;
-    }
-  }
-  *dst++ = '\0';
-}
